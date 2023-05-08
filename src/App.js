@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function App() {
   const [file, setFile] = useState(null);
@@ -10,6 +10,18 @@ function App() {
   const [isCorrect, setIsCorrect] = useState(null);
   const [numbLine, setLine] = useState(0)
   const [recognition, setRecognition] = useState(null);
+  const [questionStyle, setQuestionStyle] = useState({ fontSize: "80px" });
+
+
+  useEffect(() => {
+    // Set the font size of the question based on the device width
+    const width = window.innerWidth;
+    if (width < 800) {
+      setQuestionStyle({ fontSize: "40px" });
+    } else {
+      setQuestionStyle({ fontSize: "60px" });
+    }
+  }, []);
 
 
   function initRecognition() {
@@ -81,7 +93,6 @@ promise.then(() => {
     setInputAnswer("");
     setIsCorrect(null);
 
-    console.log(randomValue, "so random\n", randomIndex, "arr-->",arr, "\nmilk", randomPair, "\n\narr.length", numbLine, arr[0][0]);
     
 
       
@@ -99,7 +110,7 @@ promise.then(() => {
       <button style={{ fontSize: "35px", color: "purple" }} onClick={handleStartRecognition}>  🎤🎤 Microphone 🎤🎤 </button>
 
       <textarea 
-  style={{ fontSize: "50px", color: "maroon", width: "100%", height: "300px" }} 
+        className="small-textarea" 
   value={inputAnswer} 
   onChange={e => setInputAnswer(e.target.value)}
   rows={10}
@@ -111,9 +122,9 @@ promise.then(() => {
       </form>
       {question && (
         <div>
-          <p style={{ fontSize: "80px",  }}> Question: {question}</p>
+          <p style={questionStyle}> Question: {question}</p>
           {isCorrect !== null && (
-            <p style={{ fontSize: "100px", color: "green" }}>{ isCorrect ? "Correct!" : "Incorrect :("}.</p>
+            <p style={{ questionStyle, color: "green" }}>{ isCorrect ? "Correct!" : "Incorrect :("}.</p>
           )}
         </div>
       )}
