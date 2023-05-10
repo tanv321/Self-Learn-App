@@ -11,18 +11,24 @@ function App() {
   const [numbLine, setLine] = useState(0)
   const [recognition, setRecognition] = useState(null);
   const [questionStyle, setQuestionStyle] = useState({ fontSize: "80px" });
+  const [ButtonClicked, setButtonClicked] = useState(false);
+
 
 
   useEffect(() => {
     // Set the font size of the question based on the device width
     const width = window.innerWidth;
     if (width < 800) {
-      setQuestionStyle({ fontSize: "40px" });
+      setQuestionStyle({ fontSize: "30px" });
     } else {
       setQuestionStyle({ fontSize: "60px" });
     }
   }, []);
 
+
+  function revealAnswer(){
+    setButtonClicked(true);
+  }
 
   function initRecognition() {
     const recognition = new window.webkitSpeechRecognition();
@@ -59,6 +65,7 @@ function App() {
   }
 
   function handleNewQuestion() {
+    setButtonClicked(false);
     if (file) {
 
 
@@ -122,12 +129,18 @@ promise.then(() => {
       </form>
       {question && (
         <div>
+           <button onClick={revealAnswer}> idk?</button>
+           <p>{ButtonClicked && answer}</p>
+
           <p style={questionStyle}> Question: {question}</p>
           {isCorrect !== null && (
             <p style={{ questionStyle, color: "green" }}>{ isCorrect ? "Correct!" : "Incorrect :("}.</p>
           )}
+
+         
         </div>
       )}
+      
       <button style={{ fontSize: "40px", color: "blue" }}  onClick={handleNewQuestion}>New Question</button>
       <form>
         <label>
